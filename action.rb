@@ -1,14 +1,16 @@
 # Dropzone Action Info
 # Name: Gist
-# Description: Create a Gist with the contents of the dropped text
+# Version: 0.1
+# Description: Create a Gist with the contents of the dropped text.
 # Handles: Text
 # Creator: Leonardo Fedalto
 # URL: https://github.com/Fedalto
 # Events: Clicked, Dragged
 # KeyModifiers: Command, Option, Control, Shift
 # SkipConfig: No
+# OptionsNIB: APIKey
+# SkipValidation: Yes
 # RunsSandboxed: Yes
-# Version: 1.0
 # MinDropzoneVersion: 3.0
 # RubyPath: /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby
 
@@ -18,7 +20,14 @@ require 'gist'
 
 
 def gist_text text
-  new_gist = Gist.gist text
+  begin
+    new_gist = Gist.gist text, access_token: ENV['api_key'].strip
+  rescue RuntimeError => exc
+    if exc.message.include? "Net::HTTPUnauthorized"
+      $dz.error "Gist creation failed.", "Please ensure that the API access token is correct and has permission to manage your gists."
+    end
+  end
+
   new_gist['html_url']
 end
 
