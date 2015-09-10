@@ -24,7 +24,11 @@ def gist_text text
     new_gist = Gist.gist(text, filename: "gistfile.txt", access_token: ENV['api_key'].strip)
   rescue RuntimeError => exc
     if exc.message.include? "Net::HTTPUnauthorized"
-      $dz.error "Gist creation failed.", "Please ensure that the API access token is correct and has permission to manage your gists."
+      $dz.error("Gist creation failed.",
+        "Please ensure that the API access token is correct " \
+        "and has permission to manage your gists.")
+    else
+      raise
     end
   end
 
