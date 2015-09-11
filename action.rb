@@ -50,6 +50,9 @@ def last_gist
 end
 
 def dragged
+  $dz.begin("Creating gist...")
+  $dz.determinate(false)
+
   gist_url = gist_text $items[0]
 
   $dz.finish("Gist URL copied to clipboard")
