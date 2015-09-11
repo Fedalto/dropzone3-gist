@@ -19,9 +19,18 @@ require './bundler/setup'
 require 'gist'
 
 
+def public?
+  not ENV['KEY_MODIFIERS'].nil?
+end
+
 def gist_text text
   begin
-    new_gist = Gist.gist(text, filename: "gistfile.txt", access_token: ENV['api_key'].strip)
+    new_gist = Gist.gist(
+      text,
+      filename: "gistfile.txt",
+      access_token: ENV['api_key'].strip,
+      public: public?,
+    )
   rescue RuntimeError => exc
     if exc.message.include? "Net::HTTPUnauthorized"
       $dz.error("Gist creation failed.",
