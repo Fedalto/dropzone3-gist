@@ -33,11 +33,11 @@ def gist_text text
     )
   rescue RuntimeError => exc
     if exc.message.include? "Net::HTTPUnauthorized"
-      $dz.error("Gist creation failed.",
+      $dz.error("Could not create gist.",
         "Please ensure that the API access token is correct " \
         "and has permission to manage your gists.")
     else
-      raise
+      $dz.error("Could not create gist.", exc.message)
     end
   end
 
