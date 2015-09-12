@@ -44,11 +44,6 @@ def gist_text text
   new_gist['html_url']
 end
 
-def last_gist
-  clipboard_contents = $dz.read_clipboard
-  clipboard_contents
-end
-
 def dragged
   $dz.begin("Creating gist...")
   $dz.determinate(false)
