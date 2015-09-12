@@ -1,7 +1,7 @@
 # Dropzone Action Info
 # Name: Gist
 # Version: 0.1
-# Description: Create a Gist with the contents of the dropped text.
+# Description: Sends the dropped text or files to Gist service (http://gist.github.com/) and put the resulting URL on the clipboard.\nGists are private by default, use any modifier key to create a public one.
 # Handles: Files, Text
 # Creator: Leonardo Fedalto
 # URL: https://github.com/Fedalto
@@ -53,7 +53,7 @@ def gist_files files
       $dz.error("Could not create gist", "#{file_path} is a directory")
     end
     filename = File.basename file_path
-    gist_arg[filename] = IO.read file_path
+    gist_arg[filename] = File.read file_path
   end
 
   new_gist = create_gist gist_arg
