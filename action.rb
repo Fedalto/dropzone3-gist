@@ -2,7 +2,7 @@
 # Name: Gist
 # Version: 0.1
 # Description: Create a Gist with the contents of the dropped text.
-# Handles: Text
+# Handles: Files, Text
 # Creator: Leonardo Fedalto
 # URL: https://github.com/Fedalto
 # Events: Clicked, Dragged
@@ -23,11 +23,10 @@ def public?
   not ENV['KEY_MODIFIERS'].nil?
 end
 
-def gist_text text
+def create_gist gist_args
   begin
-    new_gist = Gist.gist(
-      text,
-      filename: "gistfile.txt",
+    Gist.multi_gist(
+      gist_args,
       access_token: ENV['api_key'].strip,
       public: public?,
     )
@@ -40,7 +39,24 @@ def gist_text text
       $dz.error("Could not create gist.", exc.message)
     end
   end
+end
 
+def gist_text text
+  new_gist = create_gist({'gistfile.txt' => text})
+  new_gist['html_url']
+end
+
+def gist_files files
+  gist_arg = {}
+  files.each do |file_path|
+    if File.directory? file_path
+      $dz.error("Could not create gist", "#{file_path} is a directory")
+    end
+    filename = File.basename file_path
+    gist_arg[filename] = IO.read file_path
+  end
+
+  new_gist = create_gist gist_arg
   new_gist['html_url']
 end
 
@@ -48,7 +64,12 @@ def dragged
   $dz.begin("Creating gist...")
   $dz.determinate(false)
 
-  gist_url = gist_text $items[0]
+  gist_url = case ENV['dragged_type']
+    when 'files'
+      gist_files $items
+    when 'text'
+      gist_text $items[0]
+  end
 
   $dz.finish("Gist URL copied to clipboard")
   $dz.url(gist_url)
