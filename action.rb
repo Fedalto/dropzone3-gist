@@ -1,6 +1,6 @@
 # Dropzone Action Info
 # Name: Gist
-# Version: 0.1
+# Version: 1.0
 # Description: Sends the dropped text or files to Gist service (http://gist.github.com/) and put the resulting URL on the clipboard.\nGists are private by default, use any modifier key to create a public one.
 # Handles: Files, Text
 # Creator: Leonardo Fedalto
@@ -14,6 +14,7 @@
 # RunsSandboxed: Yes
 # MinDropzoneVersion: 3.0
 # RubyPath: /System/Library/Frameworks/Ruby.framework/Versions/2.0/usr/bin/ruby
+# UniqueID: 26496555058669647478
 
 
 require './bundler/setup'
