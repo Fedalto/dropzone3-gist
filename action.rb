@@ -8,6 +8,7 @@
 # Events: Clicked, Dragged
 # KeyModifiers: Command, Option, Control, Shift
 # SkipConfig: No
+# LoginTitle: GitHub Access Token
 # OptionsNIB: APIKey
 # SkipValidation: Yes
 # RunsSandboxed: Yes
